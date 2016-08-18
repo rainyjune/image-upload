@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Upload</title>
+    <link rel="stylesheet" href="image-upload.css" />
+  </head>
+  <body>
+    <input multiple type="file" id="myInputControl" class="image-upload-hidden-control" hidden />
+    <button data-for="myInputControl" data-preview="preview" id="myUploadBtn">Upload</button>
+    <div id="preview">
+    </div>
+    <script src="image-upload.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(){
+        let imgUploadObj = new YuanImageUpload(document.getElementById('myUploadBtn'));
+        console.log(imgUploadObj);
+      });
+    </script>
+  </body>
+</html>
