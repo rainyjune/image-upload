@@ -4,14 +4,14 @@ var babel = require("gulp-babel");
 var csso = require('gulp-csso');
 
 gulp.task("default", function () {
-  return gulp.src("image-upload.js")
+  return gulp.src("src/image-upload.js")
     .pipe(babel())
     .pipe(uglify())
     .pipe(gulp.dest("dist"));
 });
 
 gulp.task('cssmin', function () {
-    return gulp.src('image-upload.css')
+    return gulp.src('src/image-upload.css')
         .pipe(csso())
         .pipe(gulp.dest('dist'));
 });

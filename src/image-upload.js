@@ -97,7 +97,7 @@ class YuanImageUpload {
     container.id = fileLocalId;
     
     let removeIcon = document.createElement("img");
-    removeIcon.src = "images/del.png";
+    removeIcon.src = "../images/del.png";
     removeIcon.classList.add('removeIcon');
     
     let reader = new FileReader();
