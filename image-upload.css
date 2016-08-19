@@ -11,10 +11,21 @@
   position: relative;
   width: 150px;
   height: 150px;
-  overflow: hidden;
   border: 1px solid blue;
   box-sizing: border-box;
+  vertical-align: bottom;
+  background-size: cover;
 }
 .image-upload-preview-container .imgContainer img.thumbnail {
   width: 100%;
+}
+
+.image-upload-preview-container .imgContainer img.removeIcon {
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  z-index: 1;
 }

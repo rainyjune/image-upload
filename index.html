@@ -6,14 +6,18 @@
     <link rel="stylesheet" href="image-upload.css" />
   </head>
   <body>
+    <input type="hidden" id="myFileUrls" />
     <input multiple type="file" id="myInputControl" class="image-upload-hidden-control" hidden />
-    <button data-for="myInputControl" data-preview="preview" id="myUploadBtn">Upload</button>
+    <button data-for="myInputControl" data-input="myFileUrls" data-preview="preview" id="myUploadBtn">Upload</button>
     <div id="preview" class="image-upload-preview-container">
     </div>
     <script src="image-upload.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function(){
-        let imgUploadObj = new YuanImageUpload(document.getElementById('myUploadBtn'));
+        let options = {
+          uploadURL: 'upload.php'
+        };
+        let imgUploadObj = new YuanImageUpload(document.getElementById('myUploadBtn'), options);
         console.log(imgUploadObj);
       });
     </script>
