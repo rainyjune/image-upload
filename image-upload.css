@@ -16,9 +16,6 @@
   vertical-align: bottom;
   background-size: cover;
 }
-.image-upload-preview-container .imgContainer img.thumbnail {
-  width: 100%;
-}
 
 .image-upload-preview-container .imgContainer img.removeIcon {
   position: absolute;
