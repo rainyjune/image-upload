@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <title>Upload</title>
-    <link rel="stylesheet" href="../dist/image-upload.css" />
+    <link rel="stylesheet" href="../src/image-upload.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <input type="hidden" id="myFileUrls" />
-    <input multiple type="file" id="myInputControl" class="image-upload-hidden-control" hidden />
-    <button data-for="myInputControl" data-input="myFileUrls" data-preview="preview" id="myUploadBtn">Upload</button>
+    <input data-input="myFileUrls" data-preview="preview" multiple type="file" id="myInputControl" class="image-upload-hidden-control" hidden />
+    <label for="myInputControl">+点击选择</label>
     <div id="preview" class="image-upload-preview-container">
     </div>
-    <script src="../dist/image-upload.js"></script>
+    <script src="../src/image-upload.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function(){
         let options = {
           uploadURL: 'upload.php'
         };
-        let imgUploadObj = new YuanImageUpload(document.getElementById('myUploadBtn'), options);
+        let imgUploadObj = new YuanImageUpload(document.getElementById('myInputControl'), options);
         console.log(imgUploadObj);
       });
     </script>

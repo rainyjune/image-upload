@@ -1,0 +1,24 @@
+.image-upload-hidden-control + label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #b4b4b4;
+  background-color: #fafafa;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid #dfdfdf;
+  height: 30px;
+  width: 80px;
+  line-height: 30px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.image-upload-hidden-control:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.image-upload-hidden-control:focus + label,
+.image-upload-hidden-control + label:hover {
+  background-color: red;
+}

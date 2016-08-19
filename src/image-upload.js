@@ -1,11 +1,9 @@
 class YuanImageUpload {
-  constructor(uploadButton, options) {
-    this.uploadButton = uploadButton;
-    let fileControlId = uploadButton.getAttribute('data-for'),
-        previewContainerId = uploadButton.getAttribute('data-preview'),
-        inputControlId = uploadButton.getAttribute('data-input');
+  constructor(fileControl, options) {
+    let previewContainerId = fileControl.getAttribute('data-preview'),
+        inputControlId = fileControl.getAttribute('data-input');
         
-    this.fileControl = document.getElementById(fileControlId);
+    this.fileControl = fileControl;
     // The div output where the content will be displayed.
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
@@ -27,11 +25,6 @@ class YuanImageUpload {
   }
   
   addEventListeners() {
-    this.uploadButton.addEventListener('click', (e) => {
-      this.fileControl.click();
-      e.preventDefault();
-      e.stopPropagation();
-    }, false);
     
     this.fileControl.addEventListener('change', (e) => {
       this.handleFiles();
