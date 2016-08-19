@@ -15,10 +15,20 @@
     <script src="../src/image-upload.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function(){
-        let options = {
-          uploadURL: 'upload.php'
+        var options = {
+          uploadURL: 'upload.php',
+          onUploadSuccess(responseJSON) {
+            if (responseJSON.success) {
+              return responseJSON.url;
+            } else {
+              return '';
+            }
+          },
+          onPreview(imgContainerId) {
+            
+          }
         };
-        let imgUploadObj = new YuanImageUpload(document.getElementById('myInputControl'), options);
+        var imgUploadObj = new YuanImageUpload(document.getElementById('myInputControl'), options);
         console.log(imgUploadObj);
       });
     </script>

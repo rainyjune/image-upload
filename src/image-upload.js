@@ -8,8 +8,6 @@ class YuanImageUpload {
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
     
-    this.counter = YuanImageUpload.counter();
-    
     this.parseOptions(options);
     this.addEventListeners();
   }
@@ -21,6 +19,9 @@ class YuanImageUpload {
     }
     if (options.onPreview) {
       this.onPreview = options.onPreview;
+    }
+    if (options.onUploadSuccess) {
+      this.onUploadSuccess = options.onUploadSuccess;
     }
   }
   
@@ -78,7 +79,7 @@ class YuanImageUpload {
         continue;
       }
       
-      let fileLocalId = 'f' + this.counter();
+      let fileLocalId = YuanImageUpload.generateUUID();
       this.createImgContainer(file, fileLocalId);
       this.sendFile(file, fileLocalId);
     }
@@ -124,22 +125,28 @@ class YuanImageUpload {
   }
   
   handleUploadResponse(responseJSON, fileLocalId) {
-    if (responseJSON.success) {
-      if (this.inputControl.value) {
-        this.inputControl.value += ';' + responseJSON.url;
-      } else {
-        this.inputControl.value = responseJSON.url;
-      }
-      document.getElementById(fileLocalId).setAttribute('data-imgid', responseJSON.url);
-    } else {
-      debugger;
+    if (this.onUploadSuccess) {
+      let imgId = this.onUploadSuccess.call(this, responseJSON);
+      this._handleUploadSuccess(imgId, fileLocalId);
     }
   }
   
-  static counter() {
-    var privateCounter = 0;
-    return function() {
-      return privateCounter++;
-    };
+  _handleUploadSuccess(imgId, fileLocalId) {
+    if (this.inputControl.value) {
+      this.inputControl.value += ';' + imgId;
+    } else {
+      this.inputControl.value = imgId;
+    }
+    document.getElementById(fileLocalId).setAttribute('data-imgid', imgId);
+  }
+  
+  static generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+    });
+    return uuid;
   }
 }
