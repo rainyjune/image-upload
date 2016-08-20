@@ -7,7 +7,9 @@ class YuanImageUpload {
     // The div output where the content will be displayed.
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
-    this.options = {};
+    this.options = {
+      allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"]
+    };
     this.parseOptions(options);
     this.setInputControlPredefinedValue();
     this.createPrefinedImgContainers();
@@ -87,6 +89,10 @@ class YuanImageUpload {
       let imageType = /^image\//;
       
       if (!imageType.test(file.type)) {
+        continue;
+      }
+      let extension = file.name.split('.').pop();
+      if ( this.options.allowedExtensions.indexOf(extension) === -1 ) {
         continue;
       }
       
