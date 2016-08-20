@@ -134,7 +134,8 @@ class YuanImageUpload {
         this.handleUploadResponse(responseJSON, fileLocalId);// Handle response.
       }
     };
-    fd.append('myFile', file);
+    let fieldName = this.fileControl.getAttribute('name') || 'myFile';
+    fd.append(fieldName, file);
     
     xhr.send(fd);// Initiate a multipart/form-data upload
   }

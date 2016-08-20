@@ -8,8 +8,8 @@
   </head>
   <body>
     <input type="hidden" id="myFileUrls" />
-    <input data-input="myFileUrls" data-preview="preview" multiple type="file" id="myInputControl" class="image-upload-hidden-control" hidden />
-    <label for="myInputControl">+点击选择</label>
+    <input name="myFile" data-input="myFileUrls" data-preview="preview" multiple type="file" id="myFileControl" class="image-upload-hidden-control" hidden />
+    <label for="myFileControl">+点击选择</label>
     <div id="preview" class="image-upload-preview-container">
     </div>
     <script src="../dist/image-upload.js"></script>
@@ -30,7 +30,7 @@
             
           }
         };
-        var imgUploadObj = new YuanImageUpload(document.getElementById('myInputControl'), options);
+        var imgUploadObj = new YuanImageUpload(document.getElementById('myFileControl'), options);
         console.log(imgUploadObj);
       });
     </script>
