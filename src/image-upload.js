@@ -7,30 +7,40 @@ class YuanImageUpload {
     // The div output where the content will be displayed.
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
-    
+    this.options = {};
     this.parseOptions(options);
+    this.setInputControlPredefinedValue();
+    this.createPrefinedImgContainers();
     this.addEventListeners();
   }
   
   parseOptions(options) {
     if (!options) return false;
-    if (options.uploadURL) {
-      this.uploadURL = options.uploadURL;
+    YuanImageUpload.extend(this.options, options);
+  }
+  
+  setInputControlPredefinedValue() {
+    if (this.options.imgIds) {
+      this.inputControl.value = this.options.imgIds.join(';');
     }
-    if (options.onPreview) {
-      this.onPreview = options.onPreview;
-    }
-    if (options.onUploadSuccess) {
-      this.onUploadSuccess = options.onUploadSuccess;
+  }
+  
+  createPrefinedImgContainers() {
+    if (this.options.imgURLs) {
+      for (let i = 0, len = this.options.imgURLs.length; i < len; i++) {
+        let fileLocalId = YuanImageUpload.generateUUID();
+        this.createImgContainer(this.options.imgURLs[i], fileLocalId);
+        document.getElementById(fileLocalId).setAttribute('data-imgid', this.options.imgIds[i]);
+      }
     }
   }
   
   addEventListeners() {
     
     this.fileControl.addEventListener('change', (e) => {
-      this.handleFiles();
       e.preventDefault();
       e.stopPropagation();
+      this.handleFiles();
     }, false);
     
     this.previewContainer.addEventListener('click', (e) => {
@@ -48,14 +58,15 @@ class YuanImageUpload {
   
   // TODO
   previewImg(imgContainerId) {
-    if (this.onPreview) {
-      this.onPreview.call(this, imgContainerId);
+    if (this.options.onPreview) {
+      this.options.onPreview.call(this, imgContainerId);
     }
   }
   
   handleRemoveImage(imgContainer) {
     let imgid = imgContainer.getAttribute('data-imgid');
     imgContainer.parentNode.removeChild(imgContainer);
+    
     let inputControlVal = this.inputControl.value.trim();
     if (inputControlVal) {
       let inputControlValArr = inputControlVal.split(";");
@@ -94,11 +105,15 @@ class YuanImageUpload {
     removeIcon.src = "../images/del.png";
     removeIcon.classList.add('removeIcon');
     
-    let reader = new FileReader();
-    reader.onload = function(e) { 
-      container.style.backgroundImage = "url(" + e.target.result + ")";
-    };
-    reader.readAsDataURL(file);
+    if (typeof file === "string") {
+      container.style.backgroundImage = "url(" + file + ")";
+    } else {
+      let reader = new FileReader();
+      reader.onload = function(e) { 
+        container.style.backgroundImage = "url(" + e.target.result + ")";
+      };
+      reader.readAsDataURL(file);
+    }    
     
     container.appendChild(removeIcon);
     this.previewContainer.appendChild(container); 
@@ -109,7 +124,7 @@ class YuanImageUpload {
     let fd = new FormData();
     
     let responseTypeAware = 'responseType' in xhr;
-    xhr.open("POST", this.uploadURL, true);
+    xhr.open("POST", this.options.uploadURL, true);
     if (responseTypeAware) {
       xhr.responseType = 'json';
     }
@@ -125,8 +140,8 @@ class YuanImageUpload {
   }
   
   handleUploadResponse(responseJSON, fileLocalId) {
-    if (this.onUploadSuccess) {
-      let imgId = this.onUploadSuccess.call(this, responseJSON);
+    if (this.options.onUploadSuccess) {
+      let imgId = this.options.onUploadSuccess.call(this, responseJSON);
       this._handleUploadSuccess(imgId, fileLocalId);
     }
   }
@@ -148,5 +163,16 @@ class YuanImageUpload {
         return (c=='x' ? r : (r&0x7|0x8)).toString(16);
     });
     return uuid;
+  }
+  
+  static extend(){
+    for(let i = 1; i < arguments.length; i++) {
+      for(let key in arguments[i]) {
+        if(arguments[i].hasOwnProperty(key)) {
+          arguments[0][key] = arguments[i][key];
+        }
+      }
+    }
+    return arguments[0];
   }
 }
