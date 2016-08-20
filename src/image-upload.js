@@ -88,6 +88,10 @@ class YuanImageUpload {
       let file = files[i];
       let imageType = /^image\//;
       
+      if (this.options.maxSizeEachFile && (file.size > this.options.maxSizeEachFile) ) {
+        continue;
+      }
+      
       if (!imageType.test(file.type)) {
         continue;
       }
