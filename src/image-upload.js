@@ -9,7 +9,8 @@ class YuanImageUpload {
     this.inputControl = document.getElementById(inputControlId);
     this.options = {
       allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
-      removeIconUrl: "../images/del.png"
+      removeIconUrl: "../images/del.png",
+      parser: function() {} // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
     };
     this.parseOptions(options);
     this.setInputControlPredefinedValue();
@@ -156,8 +157,8 @@ class YuanImageUpload {
   }
   
   handleUploadResponse(responseJSON, fileLocalId) {
-    if (this.options.onUploadSuccess) {
-      let imgId = this.options.onUploadSuccess.call(this, responseJSON);
+    if (this.options.parser) {
+      let imgId = this.options.parser.call(this, responseJSON);
       this._handleUploadSuccess(imgId, fileLocalId);
     }
   }

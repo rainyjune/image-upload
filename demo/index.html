@@ -19,15 +19,20 @@
           imgIds: ['./uploads/Cat-party.gif', './uploads/skin-deep-beauty-and-laser-clinic-cardiff.png', './uploads/WILDBOAR.BMP'],
           imgURLs: ['./uploads/Cat-party.gif', './uploads/skin-deep-beauty-and-laser-clinic-cardiff.png', './uploads/WILDBOAR.BMP'],
           uploadURL: 'upload.php',
-          onUploadSuccess(responseJSON) {
+          allowedExtensions: ['png', 'jpg'],
+          maxSizeEachFile: 1024 * 50, // 50K
+          parser(responseJSON) {
             if (responseJSON.success) {
               return responseJSON.url;
             } else {
               return '';
             }
           },
+          onUploadError(xhr, fileLocalId) {
+            debugger;
+          },
           onPreview(imgContainerId) {
-            
+            debugger;
           }
         };
         var imgUploadObj = new YuanImageUpload(document.getElementById('myFileControl'), options);
