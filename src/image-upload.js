@@ -139,9 +139,13 @@ class YuanImageUpload {
       xhr.responseType = 'json';
     }
     xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        let responseJSON = responseTypeAware ? xhr.response : JSON.parse(xhr.responseText);
-        this.handleUploadResponse(responseJSON, fileLocalId);// Handle response.
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+          let responseJSON = responseTypeAware ? xhr.response : JSON.parse(xhr.responseText);
+          this.handleUploadResponse(responseJSON, fileLocalId);
+        } else {
+          this._handleUploadFailure(xhr, fileLocalId);
+        }
       }
     };
     let fieldName = this.fileControl.getAttribute('name') || 'myFile';
@@ -164,6 +168,12 @@ class YuanImageUpload {
       this.inputControl.value = imgId;
     }
     document.getElementById(fileLocalId).setAttribute('data-imgid', imgId);
+  }
+  
+  _handleUploadFailure(xhr, fileLocalId) {
+    if (this.options.onUploadError) {
+      this.options.onUploadError.call(this, xhr, fileLocalId);
+    }
   }
   
   static generateUUID() {
