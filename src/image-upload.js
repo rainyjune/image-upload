@@ -8,7 +8,8 @@ class YuanImageUpload {
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
     this.options = {
-      allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"]
+      allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
+      removeIconUrl: "../images/del.png"
     };
     this.parseOptions(options);
     this.setInputControlPredefinedValue();
@@ -112,7 +113,7 @@ class YuanImageUpload {
     container.id = fileLocalId;
     
     let removeIcon = document.createElement("img");
-    removeIcon.src = "../images/del.png";
+    removeIcon.src = this.options.removeIconUrl;
     removeIcon.classList.add('removeIcon');
     
     if (typeof file === "string") {
