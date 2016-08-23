@@ -12,3 +12,9 @@ Further Reading
   * [MDN: FileList Documentation](https://developer.mozilla.org/en-US/docs/Web/API/FileList)
   * [W3C: XMLHttpRequest Specification](http://www.w3.org/TR/XMLHttpRequest/)
   
+Features
+
+  * Multiple file upload
+  * Preview
+  * No browser plugins required
+  * No library dependencies
