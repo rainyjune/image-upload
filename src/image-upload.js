@@ -53,7 +53,7 @@ class YuanImageUpload {
       let target = e.target,
           targetClassList = target.classList;
       if (targetClassList.contains("removeIcon")) {
-        this.handleRemoveImage(target.parentElement);
+        this.handleRemoveImage(target.parentElement || target.parentNode);
       } else if (targetClassList.contains("imgContainer")) {
         this.previewImg(target.id);
       }
