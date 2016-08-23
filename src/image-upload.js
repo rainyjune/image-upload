@@ -60,6 +60,23 @@ class YuanImageUpload {
     });
   }
   
+  addEventListener(eventName, callback) {
+    // 'uploaded'
+    // 'errorupload'
+    this.fileControl.addEventListener(eventName, callback, false);
+  }
+  
+  removeEventListener(eventName, callback) {
+    this.fileControl.removeEventListener(eventName, callback, false);
+  }
+  
+  trigger(eventName, customData) {
+    let event = new CustomEvent(eventName, {
+      detail: customData || null
+    });
+    this.fileControl.dispatchEvent(event);
+  }
+  
   // TODO
   previewImg(imgContainerId) {
     if (this.options.onPreview) {
@@ -145,8 +162,9 @@ class YuanImageUpload {
         if (xhr.status == 200) {
           let responseJSON = responseTypeAware ? xhr.response : JSON.parse(xhr.responseText);
           this.handleUploadResponse(responseJSON, fileLocalId);
+          this.trigger('uploaded', {responseJSON, fileLocalId });
         } else {
-          this._handleUploadFailure(xhr, fileLocalId);
+          this.trigger('errorupload', { xhr, fileLocalId });
         }
       }
     };
@@ -172,12 +190,6 @@ class YuanImageUpload {
     document.getElementById(fileLocalId).setAttribute('data-imgid', imgId);
   }
   
-  _handleUploadFailure(xhr, fileLocalId) {
-    if (this.options.onUploadError) {
-      this.options.onUploadError.call(this, xhr, fileLocalId);
-    }
-  }
-  
   static generateUUID() {
     let d = new Date().getTime();
     let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -199,3 +211,29 @@ class YuanImageUpload {
     return arguments[0];
   }
 }
+
+(function () {
+  function CustomEvent ( event, params ) {
+    params = params || { bubbles: true, cancelable: true, detail: undefined };
+    if (typeof params.bubbles === "undefined") {
+      params.bubbles = true;
+    }
+    if (typeof params.cancelable === "undefined") {
+      params.cancelable = true;
+    }
+    var evt;
+    try{
+      // DOM Level 3 Events support custom event.
+      evt = document.createEvent('CustomEvent');
+      evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+    }catch(e) {
+      // DOM Level 2 Events does not support custom event.
+      evt = document.createEvent('Event');
+      evt.initEvent(event, params.bubbles, params.cancelable);
+      evt.detail = params.detail;
+    }
+    return evt;
+  }
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;  
+})();

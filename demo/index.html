@@ -28,15 +28,18 @@
               return '';
             }
           },
-          onUploadError(xhr, fileLocalId) {
-            debugger;
-          },
           onPreview(imgContainerId) {
             debugger;
           }
         };
         var imgUploadObj = new YuanImageUpload(document.getElementById('myFileControl'), options);
         console.log(imgUploadObj);
+        imgUploadObj.addEventListener('uploaded', function(e) {
+          debugger;
+        });
+        imgUploadObj.addEventListener('errorupload', function(e) {
+          debugger;
+        });
       });
     </script>
   </body>
