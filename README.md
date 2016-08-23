@@ -10,8 +10,8 @@ Features
 Supported browsers:
 
   * IE 10+
-  * Firefox 4+
-  * Chrome 7+
+  * Firefox 6+
+  * Chrome 9+
   * Safari 6+
   * Opera 12.1+
   * iOS Safari 6.1+
