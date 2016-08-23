@@ -58,6 +58,22 @@ class YuanImageUpload {
         this.previewImg(target.id);
       }
     });
+    
+    // Fixes label for input file click bug on Firefox before version 23.
+    // http://stackoverflow.com/questions/7742278/workaround-for-file-input-label-click-firefox
+    if(window.navigator.buildID && parseInt(window.navigator.buildID,10) < 20130714000000){
+      let fileControlId = this.fileControl.id;
+      if (fileControlId) {
+        let label = document.querySelector('label[for="' + fileControlId + '"]');
+        if (label) {
+          label.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            this.fileControl.click();
+          }, false);
+        }
+      }
+    }
   }
   
   addEventListener(eventName, callback) {
