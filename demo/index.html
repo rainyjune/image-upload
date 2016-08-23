@@ -21,14 +21,14 @@
           uploadURL: 'upload.php',
           allowedExtensions: ['png', 'jpg'],
           maxSizeEachFile: 1024 * 50, // 50K
-          parser(responseJSON) {
+          parser: function(responseJSON) {
             if (responseJSON.success) {
               return responseJSON.url;
             } else {
               return '';
             }
           },
-          onPreview(imgContainerId) {
+          onPreview: function(imgContainerId) {
             debugger;
           }
         };
