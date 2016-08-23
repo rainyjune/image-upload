@@ -7,7 +7,18 @@ Features
   * No browser plugins required
   * No library dependencies
 
-Inspired by:
+Supported browsers:
+
+  * IE 10+
+  * Firefox 4+
+  * Chrome 7+
+  * Safari 6+
+  * Opera 12.1+
+  * iOS Safari 6.1+
+  * Android 3+
+  * IE mobile 10+
+
+Inspired by
   
   * https://developer.mozilla.org/en/docs/Using_files_from_web_applications
   * http://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
