@@ -12,11 +12,6 @@ Supported browsers:
   * IE 10+
   * Firefox 6+
   * Chrome 9+
-  * Safari 6+
-  * Opera 12.1+
-  * iOS Safari 6.1+
-  * Android 3+
-  * IE mobile 10+
 
 Inspired by
   
