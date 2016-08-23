@@ -152,15 +152,11 @@ class YuanImageUpload {
     let xhr = new XMLHttpRequest();
     let fd = new FormData();
     
-    let responseTypeAware = 'responseType' in xhr;
     xhr.open("POST", this.options.uploadURL, true);
-    if (responseTypeAware) {
-      xhr.responseType = 'json';
-    }
     xhr.onreadystatechange = () => {
       if (xhr.readyState == 4) {
         if (xhr.status == 200) {
-          let responseJSON = responseTypeAware ? xhr.response : JSON.parse(xhr.responseText);
+          let responseJSON = JSON.parse(xhr.responseText);
           this.handleUploadResponse(responseJSON, fileLocalId);
           this.trigger('uploaded', {responseJSON, fileLocalId });
         } else {
