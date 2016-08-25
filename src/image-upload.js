@@ -20,7 +20,9 @@ class YuanImageUpload {
       allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
       imgIds: [],
       imgURLs: [],
+      maxFiles: 0, // No limit.
       maxSizeEachFile: 10 * 1024 * 1024, // 10M each file.
+      onMaxFileReached: function() {},
       onPreview: function() {},
       parser: function() {}, // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
       removeIconUrl: "../images/del.png",
@@ -30,6 +32,10 @@ class YuanImageUpload {
   
   parseOptions(options) {
     if (!options) return false;
+    let maxFiles = this.fileControl.getAttribute('data-maxfiles');
+    if (maxFiles && !isNaN(maxFiles)) {
+      this.options.maxFiles = parseInt(maxFiles);
+    }
     YuanImageUpload.extend(this.options, options);
   }
   
@@ -71,11 +77,21 @@ class YuanImageUpload {
     
     // Fixes label for input file click bug on Firefox before version 23.
     // http://stackoverflow.com/questions/7742278/workaround-for-file-input-label-click-firefox
-    if(window.navigator.buildID && parseInt(window.navigator.buildID,10) < 20130714000000){
-      let fileControlId = this.fileControl.id;
-      if (fileControlId) {
-        let label = document.querySelector('label[for="' + fileControlId + '"]');
-        if (label) {
+    let isOldFirefox = window.navigator.buildID && (parseInt(window.navigator.buildID,10) < 20130714000000);
+    
+    let fileControlId = this.fileControl.id;
+    if (fileControlId) {
+      let label = document.querySelector('label[for="' + fileControlId + '"]');
+      if (label) {
+        label.addEventListener('click', (e) => {
+          if (this.isMaxFilesReached()) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+          this.handleMaxFileReached();
+        }, false);
+        
+        if (isOldFirefox) {
           label.addEventListener('click', (e) => {
             e.stopPropagation();
             e.preventDefault();
@@ -103,7 +119,18 @@ class YuanImageUpload {
     this.fileControl.dispatchEvent(event);
   }
   
-  // TODO
+  handleMaxFileReached() {
+    if (this.isMaxFilesReached()) {
+      if (this.options.onMaxFileReached) {
+        this.options.onMaxFileReached.call(this);
+      }
+    }
+  }
+  
+  isMaxFilesReached() {
+    return this.options.maxFiles && this.inputControl.value.trim() && this.inputControl.value.split(';').length >= this.options.maxFiles;
+  }
+  
   previewImg(imgContainerId) {
     if (this.options.onPreview) {
       this.options.onPreview.call(this, imgContainerId);
