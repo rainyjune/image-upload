@@ -7,15 +7,25 @@ class YuanImageUpload {
     // The div output where the content will be displayed.
     this.previewContainer = document.getElementById(previewContainerId);
     this.inputControl = document.getElementById(inputControlId);
-    this.options = {
-      allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
-      removeIconUrl: "../images/del.png",
-      parser: function() {} // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
-    };
+    
+    this.setDefaultOptions();
     this.parseOptions(options);
     this.setInputControlPredefinedValue();
     this.createPrefinedImgContainers();
     this.addEventListeners();
+  }
+  
+  setDefaultOptions() {
+    this.options = {
+      allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
+      imgIds: [],
+      imgURLs: [],
+      maxSizeEachFile: 10 * 1024 * 1024, // 10M each file.
+      onPreview: function() {},
+      parser: function() {}, // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
+      removeIconUrl: "../images/del.png",
+      uploadURL: ''
+    };
   }
   
   parseOptions(options) {
@@ -24,13 +34,13 @@ class YuanImageUpload {
   }
   
   setInputControlPredefinedValue() {
-    if (this.options.imgIds) {
+    if (this.options.imgIds.length) {
       this.inputControl.value = this.options.imgIds.join(';');
     }
   }
   
   createPrefinedImgContainers() {
-    if (this.options.imgURLs) {
+    if (this.options.imgURLs.length) {
       for (let i = 0, len = this.options.imgURLs.length; i < len; i++) {
         let fileLocalId = YuanImageUpload.generateUUID();
         this.createImgContainer(this.options.imgURLs[i], fileLocalId);
@@ -123,7 +133,7 @@ class YuanImageUpload {
       let file = files[i];
       let imageType = /^image\//;
       
-      if (this.options.maxSizeEachFile && (file.size > this.options.maxSizeEachFile) ) {
+      if (file.size > this.options.maxSizeEachFile) {
         continue;
       }
       
