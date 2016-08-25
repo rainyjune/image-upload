@@ -20,6 +20,7 @@
   box-sizing: border-box;
   vertical-align: bottom;
   background-size: cover;
+  cursor: pointer;
 }
 
 .image-upload-preview-container .imgContainer img.removeIcon {
