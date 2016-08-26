@@ -18,6 +18,7 @@ class YuanImageUpload {
   setDefaultOptions() {
     this.options = {
       allowedExtensions: ["gif", "png", "jpg", "jpeg", "bmp"],
+      bgImagePlaceholder: '',
       imgIds: [],
       imgURLs: [],
       maxFiles: 0, // No limit.
@@ -188,7 +189,11 @@ class YuanImageUpload {
     removeIcon.classList.add('removeIcon');
     
     if (typeof file === "string") {
-      container.style.backgroundImage = "url(" + file + ")";
+      let bgimgurl = "url(" + file + ")";
+      if (this.options.bgImagePlaceholder) {
+        bgimgurl += ", url(" + this.options.bgImagePlaceholder +")";
+      }
+      container.style.backgroundImage = bgimgurl;
     } else {
       let reader = new FileReader();
       reader.onload = function(e) { 
