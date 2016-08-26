@@ -25,6 +25,7 @@ class YuanImageUpload {
       maxSizeEachFile: 10 * 1024 * 1024, // 10M each file.
       onMaxFileReached: function() {},
       onPreview: function() {},
+      onUploadError: function() {},
       parser: function() {}, // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
       removeIconUrl: "../images/del.png",
       uploadURL: ''
@@ -232,6 +233,9 @@ class YuanImageUpload {
     if (this.options.parser) {
       let imgId = this.options.parser.call(this, responseJSON);
       this._handleUploadSuccess(imgId, fileLocalId);
+      if (!imgId && this.options.onUploadError) {
+        this.options.onUploadError.call(this, fileLocalId);
+      }
     }
   }
   
