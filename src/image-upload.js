@@ -27,6 +27,8 @@ class YuanImageUpload {
       onMaxFileReached: function() {},
       onMaxSizeReached: function() {},
       onPreview: function() {},
+      onRemoveImage: function() {},
+      onUploadComplete: function() {},
       onUploadError: function() {},
       parser: function() {}, // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
       removeIconUrl: "../images/del.png",
@@ -154,6 +156,9 @@ class YuanImageUpload {
       }
       this.inputControl.value = inputControlValArr.join(";");
     }
+    if (this.options.onRemoveImage) {
+      this.options.onRemoveImage.call(this);
+    }
   }
   
   handleFiles() {
@@ -246,6 +251,9 @@ class YuanImageUpload {
       this._handleUploadSuccess(imgId, fileLocalId);
       if (!imgId && this.options.onUploadError) {
         this.options.onUploadError.call(this, fileLocalId);
+      }
+      if (this.options.onUploadComplete) {
+        this.options.onUploadComplete.call(this, fileLocalId);
       }
     }
   }
