@@ -23,7 +23,9 @@ class YuanImageUpload {
       imgURLs: [],
       maxFiles: 0, // No limit.
       maxSizeEachFile: 10 * 1024 * 1024, // 10M each file.
+      onFileTypeInvalid: function() {},
       onMaxFileReached: function() {},
+      onMaxSizeReached: function() {},
       onPreview: function() {},
       onUploadError: function() {},
       parser: function() {}, // Tell the library how to parse the Ajax response. A valid URL should be returned in this function.
@@ -163,14 +165,23 @@ class YuanImageUpload {
       let imageType = /^image\//;
       
       if (file.size > this.options.maxSizeEachFile) {
+        if (fileLength === 1 && this.options.onMaxSizeReached) {
+          this.options.onMaxSizeReached.call(this, file);
+        }
         continue;
       }
       
       if (!imageType.test(file.type)) {
+        if (fileLength === 1 && this.options.onFileTypeInvalid) {
+          this.options.onFileTypeInvalid.call(this, file);
+        }
         continue;
       }
       let extension = file.name.split('.').pop();
       if ( this.options.allowedExtensions.indexOf(extension) === -1 ) {
+        if (fileLength === 1 && this.options.onFileTypeInvalid) {
+          this.options.onFileTypeInvalid.call(this, file);
+        }
         continue;
       }
       
